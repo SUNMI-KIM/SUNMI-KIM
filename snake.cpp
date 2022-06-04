@@ -71,13 +71,14 @@ int main(){
     init_pair(1, COLOR_GREEN, COLOR_BLACK);
     attron(COLOR_PAIR(1));
     attroff(COLOR_PAIR(1));
+    resize_term(35, 80);
     refresh();
 
-    WINDOW *w1 = newwin(32, 42, 2, 2);
+    WINDOW *w1 = newwin(30, 40, 2, 2);
     mvwprintw(w1, 6, 6, c);
     wrefresh(w1);
     
-    WINDOW *score = newwin(15, 40, 5, 80);
+    WINDOW *score = newwin(14, 36, 3, 43);
     init_pair(3, COLOR_BLACK, COLOR_WHITE);
     wmove(score, 0, 0);
     wattron(score, COLOR_PAIR(3));
@@ -89,7 +90,7 @@ int main(){
     mvwprintw(score, 6, 3, "gate: %d", MainSnake.snake_length);
     wrefresh(score);
 
-    WINDOW *mission = newwin(15, 40, 21, 80);
+    WINDOW *mission = newwin(14, 36, 18, 43);
     init_pair(3, COLOR_BLACK, COLOR_WHITE);
     wmove(mission, 0, 0);
     wattron(mission, COLOR_PAIR(3));
