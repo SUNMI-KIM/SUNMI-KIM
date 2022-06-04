@@ -74,8 +74,8 @@ int main(){
     resize_term(35, 80);
     refresh();
 
-    WINDOW *w1 = newwin(30, 40, 2, 2);
-    mvwprintw(w1, 6, 6, c);
+    WINDOW *w1 = newwin(30, 41, 2, 2);
+    mvwprintw(w1, 2, 2, c);
     wrefresh(w1);
     
     WINDOW *score = newwin(14, 36, 3, 43);
