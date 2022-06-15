@@ -10,6 +10,7 @@ public:
     int head_x, head_y;
     int snake_length = 3;
     int body[3];
+    int d = KEY_LEFT;
     Snake(int x, int y);
 
     char map[30][40] = {
@@ -45,7 +46,7 @@ public:
             {9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9}
     };
     void showSnake();
-    void showMap();
+    void setDirection();
 };
 Snake::Snake(int x, int y)
 {
@@ -57,6 +58,7 @@ void Snake::showSnake()
 {
     map[head_y][head_x] = 3;
 }
+
 void color() {
     start_color();
     init_pair(1, COLOR_WHITE, COLOR_WHITE);
@@ -105,22 +107,28 @@ int main() {
     mvwprintw(missionBoard, 6, 3, "gate: %d", MainSnake.snake_length);
     wrefresh(missionBoard); // Snake head 초기에 가장 중앙에 배치함
     while (1) {
-
         int key;
         noecho();
         key = wgetch(gameBoard);
+        flushinp();
+        usleep(150000);
+        MainSnake.map[head_y][head_x] = 0;
         switch (key) {
         case(KEY_DOWN): // KEY_DOWN
-            MainSnake.head_x += 1;
+            MainSnake.head_y += 1;
+    
             break;
         case(KEY_UP): // KEY_UP
-            MainSnake.head_x -= 1;
+            MainSnake.head_y -= 1;
+           
             break;
         case(KEY_LEFT): // KEY_LEFT
-            MainSnake.head_y -= 1;
+            MainSnake.head_x -= 1;
+            
             break;
         case(KEY_RIGHT): // KEY_RIGHT
-            MainSnake.head_y += 1;
+            MainSnake.head_x += 1;
+     
             break;
         }
         MainSnake.showSnake();
@@ -142,8 +150,9 @@ int main() {
                 }
             }
         }
-        
+
         wrefresh(gameBoard);
+        sleep(100);
     }
 
 
