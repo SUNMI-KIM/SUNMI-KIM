@@ -23,7 +23,7 @@ public:
     void showMap();
     void SpawnItem();
     void DelItem();
-    void UnableItem(int p1, int p2);
+    bool UnableItem(int p1, int p2);
 };
 Snake::Snake(int x = 20, int y = 15)
 {
@@ -46,7 +46,7 @@ void Snake::showMap() {
 
 }
 void Snake::SpawnItem() {
-    srand(time(NULL);
+    srand(time(NULL));
     int itemShape = rand() % 2;
     item[0] = rand() % 30;
     item[1] = rand() % 40;
