@@ -2,6 +2,7 @@
 #include <time.h>
 #include <string>
 #include <iostream>
+#include <unistd.h>
 using namespace std;
 
 class Snake
@@ -112,7 +113,7 @@ int main() {
         key = wgetch(gameBoard);
         flushinp();
         usleep(150000);
-        MainSnake.map[head_y][head_x] = 0;
+        MainSnake.map[MainSnake.head_y][MainSnake.head_x] = 0;
         switch (key) {
         case(KEY_DOWN): // KEY_DOWN
             MainSnake.head_y += 1;
@@ -152,7 +153,6 @@ int main() {
         }
 
         wrefresh(gameBoard);
-        sleep(100);
     }
 
 
