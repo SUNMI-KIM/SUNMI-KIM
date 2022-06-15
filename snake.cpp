@@ -75,6 +75,10 @@ int main() {
     border('@', '@', '@', '@', '@', '@', '@', '@');
     refresh();
 
+    WINDOW *gameBoard = newwin(30, 40, 2, 2);
+    keypad(gameBoard, TRUE);
+    WINDOW* scoreBoard = newwin(14, 36, 3, 43);
+    WINDOW* missionBoard = newwin(14, 36, 18, 43);
     Snake MainSnake = Snake(15, 20); // Snake head 초기에 가장 중앙에 배치함
     while (1) {
            
@@ -102,8 +106,6 @@ int main() {
             attroff(COLOR_PAIR(1));
             refresh();
 
-            WINDOW* gameBoard = newwin(30, 40, 2, 2);
-            int keypad(gameBoard, true);
             for (int i = 0; i < 30; i++) {
                 for (int j = 0; j < 40; j++) {
                     switch (MainSnake.map[i][j]) {
@@ -124,7 +126,6 @@ int main() {
                 wrefresh(gameBoard);
             }
 
-            WINDOW* scoreBoard = newwin(14, 36, 3, 43);
             init_pair(3, COLOR_BLACK, COLOR_WHITE);
             wmove(scoreBoard, 0, 0);
             wattron(scoreBoard, COLOR_PAIR(3));
@@ -136,7 +137,6 @@ int main() {
             mvwprintw(scoreBoard, 6, 3, "gate: %d", MainSnake.snake_length);
             wrefresh(scoreBoard);
 
-            WINDOW* missionBoard = newwin(14, 36, 18, 43);
             wbkgd(missionBoard, COLOR_PAIR(6));
             init_pair(3, COLOR_BLACK, COLOR_WHITE);
             wmove(missionBoard, 0, 0);
@@ -149,9 +149,8 @@ int main() {
             mvwprintw(missionBoard, 6, 3, "gate: %d", MainSnake.snake_length);
             wrefresh(missionBoard);
         }
-    }
+    
     endwin();
-
     return 0;
 
 }
