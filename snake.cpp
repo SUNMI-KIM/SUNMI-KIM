@@ -45,6 +45,7 @@ public:
             {9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9}
     };
     void showSnake();
+    void showMap();
 };
 Snake::Snake(int x, int y)
 {
@@ -73,13 +74,38 @@ int main() {
     refresh();
 
     WINDOW* gameBoard = newwin(30, 40, 2, 2);
+    start_color();
+    init_pair(1, COLOR_GREEN, COLOR_BLACK);
+    attron(COLOR_PAIR(1));
+    attroff(COLOR_PAIR(1));
+    refresh();
     keypad(gameBoard, TRUE);
     WINDOW* scoreBoard = newwin(14, 36, 3, 43);
+    init_pair(3, COLOR_BLACK, COLOR_WHITE);
+    wmove(scoreBoard, 0, 0);
+    wattron(scoreBoard, COLOR_PAIR(3));
+    wborder(scoreBoard, '|', '|', '-', '-', '*', '*', '*', '*');
+    wbkgd(scoreBoard, COLOR_PAIR(3));
+    mvwprintw(scoreBoard, 3, 3, "body: %d", MainSnake.snake_length);
+    mvwprintw(scoreBoard, 4, 3, "grow: %d", MainSnake.snake_length);
+    mvwprintw(scoreBoard, 5, 3, "poison: %d", MainSnake.snake_length);
+    mvwprintw(scoreBoard, 6, 3, "gate: %d", MainSnake.snake_length);
+    wrefresh(scoreBoard);
     WINDOW* missionBoard = newwin(14, 36, 18, 43);
+    wbkgd(missionBoard, COLOR_PAIR(6));
+    init_pair(3, COLOR_BLACK, COLOR_WHITE);
+    wmove(missionBoard, 0, 0);
+    wattron(missionBoard, COLOR_PAIR(3));
+    wborder(missionBoard, '|', '|', '-', '-', '*', '*', '*', '*');
+    wbkgd(missionBoard, COLOR_PAIR(3));
+    mvwprintw(missionBoard, 3, 3, "body: %d", MainSnake.snake_length);
+    mvwprintw(missionBoard, 4, 3, "grow: %d", MainSnake.snake_length);
+    mvwprintw(missionBoard, 5, 3, "poison: %d", MainSnake.snake_length);
+    mvwprintw(missionBoard, 6, 3, "gate: %d", MainSnake.snake_length);
+    wrefresh(missionBoard);
     Snake MainSnake = Snake(15, 20); // Snake head 초기에 가장 중앙에 배치함
     while (1) {
 
-                 // 변경사항 생길 때마다 실행해야함
         int key;
         noecho();
         key = getch();
@@ -98,12 +124,6 @@ int main() {
             break;
         }
         MainSnake.showSnake();  
-        start_color();
-        init_pair(1, COLOR_GREEN, COLOR_BLACK);
-        attron(COLOR_PAIR(1));
-        attroff(COLOR_PAIR(1));
-        refresh();
-
         for (int i = 0; i < 30; i++) {
             for (int j = 0; j < 40; j++) {
                 switch (MainSnake.map[i][j]) {
@@ -121,32 +141,10 @@ int main() {
                     break;
                 }
             }
-            wrefresh(gameBoard);
         }
-
-        init_pair(3, COLOR_BLACK, COLOR_WHITE);
-        wmove(scoreBoard, 0, 0);
-        wattron(scoreBoard, COLOR_PAIR(3));
-        wborder(scoreBoard, '|', '|', '-', '-', '*', '*', '*', '*');
-        wbkgd(scoreBoard, COLOR_PAIR(3));
-        mvwprintw(scoreBoard, 3, 3, "body: %d", MainSnake.snake_length);
-        mvwprintw(scoreBoard, 4, 3, "grow: %d", MainSnake.snake_length);
-        mvwprintw(scoreBoard, 5, 3, "poison: %d", MainSnake.snake_length);
-        mvwprintw(scoreBoard, 6, 3, "gate: %d", MainSnake.snake_length);
-        wrefresh(scoreBoard);
-
-        wbkgd(missionBoard, COLOR_PAIR(6));
-        init_pair(3, COLOR_BLACK, COLOR_WHITE);
-        wmove(missionBoard, 0, 0);
-        wattron(missionBoard, COLOR_PAIR(3));
-        wborder(missionBoard, '|', '|', '-', '-', '*', '*', '*', '*');
-        wbkgd(missionBoard, COLOR_PAIR(3));
-        mvwprintw(missionBoard, 3, 3, "body: %d", MainSnake.snake_length);
-        mvwprintw(missionBoard, 4, 3, "grow: %d", MainSnake.snake_length);
-        mvwprintw(missionBoard, 5, 3, "poison: %d", MainSnake.snake_length);
-        mvwprintw(missionBoard, 6, 3, "gate: %d", MainSnake.snake_length);
-        wrefresh(missionBoard);
+        wrefresh(gameBoard);
     }
+
 
     endwin();
     return 0;
