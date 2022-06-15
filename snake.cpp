@@ -72,7 +72,8 @@ int main() {
     resize_term(35, 80);
     border('@', '@', '@', '@', '@', '@', '@', '@');
     refresh();
-    Snake MainSnake = Snake(15, 20);
+
+    MainSnake.showSnake();
     WINDOW* gameBoard = newwin(30, 40, 2, 2);
     start_color();
     init_pair(1, COLOR_GREEN, COLOR_BLACK);
@@ -102,12 +103,13 @@ int main() {
     mvwprintw(missionBoard, 4, 3, "grow: %d", MainSnake.snake_length);
     mvwprintw(missionBoard, 5, 3, "poison: %d", MainSnake.snake_length);
     mvwprintw(missionBoard, 6, 3, "gate: %d", MainSnake.snake_length);
-    wrefresh(missionBoard); // Snake head 초기에 가장 중앙에 배치함
+    wrefresh(missionBoard);
+    Snake MainSnake = Snake(15, 20); // Snake head 초기에 가장 중앙에 배치함
     while (1) {
 
         int key;
         noecho();
-        key = getch();
+        key = wgetch(gameBoard);
         switch (key) {
         case(KEY_DOWN): // KEY_DOWN
             MainSnake.head_x += 1;
@@ -122,7 +124,6 @@ int main() {
             MainSnake.head_y += 1;
             break;
         }
-        MainSnake.showSnake();  
         for (int i = 0; i < 30; i++) {
             for (int j = 0; j < 40; j++) {
                 switch (MainSnake.map[i][j]) {
@@ -141,6 +142,7 @@ int main() {
                 }
             }
         }
+        
         wrefresh(gameBoard);
     }
 
