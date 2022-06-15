@@ -2,65 +2,73 @@
 #include <time.h>
 #include <string>
 #include <iostream>
-#include <unistd.h>
+#include <vector>
+#include <thread>
+#include <random>
+#include "./map/map.cpp"
 using namespace std;
 
 class Snake
 {
 public:
-    int head_x, head_y;
-    int snake_length = 3;
-    int body[3];
-    int d = KEY_LEFT;
     Snake(int x, int y);
+    int head_x, head_y;
+    char ahead; // n, s, e, w 초기 설정은 west
+    int snake_length = 3;
+    vector <pair<int, int>> body;
+    int item[3];
+    int itemType[] = {5, 6}
 
-    char map[30][40] = {
-            {9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9}
-    };
+    void setSnake();
     void showSnake();
-    void setDirection();
+    void SpawnItem();
+    void DelItem();
+    bool UnableItem(int p1, int p2);
 };
-Snake::Snake(int x, int y)
+Snake::Snake(int x = 20, int y = 15)
 {
     head_x = x;
     head_y = y;
+    ahead = 'w';
 }
-
+void Snake::setSnake()
+{
+    body.push_back(pair<int, int>(head_y, head_x));
+    body.push_back(pair<int, int>(head_y, head_x + 1));
+    body.push_back(pair<int, int>(head_y, head_x + 2));
+}
 void Snake::showSnake()
 {
-    map[head_y][head_x] = 3;
+    for (int i = 0; i < body.size(); i++)
+        map[body[i].first][body[i].second] = 3;
 }
-
-void color() {
+void Snake::SpawnItem() {
+    srand((unsigned int)time(0));
+    int itemShape = rand() % 2;
+    item[0] = rand() % 30;
+    item[1] = rand() % 40;
+    item[2] = time(0);
+    while (!UnableItem(item[0], item[1])) {
+        item[0] = rand() % 30;
+        item[1] = rand() % 40;
+    }
+    map[item[0]][item[1]] = itemType[itemShape];
+}
+void Snake::DelItem()
+{
+    if (time(0) - item[3] > 6) {
+        map[item[0]][item[1]] = 0;
+    }
+    SpawnItem();
+}
+bool Snake::UnableItem(int p1, int p2) {
+    if (map[p1][p2] != 0) {
+        return false;
+    }
+    return true;
+}
+void color()
+{
     start_color();
     init_pair(1, COLOR_WHITE, COLOR_WHITE);
     init_pair(2, COLOR_BLACK, COLOR_BLACK);
@@ -69,14 +77,15 @@ void color() {
     init_pair(5, COLOR_GREEN, COLOR_GREEN);
     init_pair(6, COLOR_RED, COLOR_RED);
 }
-int main() {
+int main()
+{
     initscr();
     color();
     resize_term(35, 80);
     border('@', '@', '@', '@', '@', '@', '@', '@');
     refresh();
 
-    Snake MainSnake = Snake(15, 20);
+    Snake MainSnake = Snake();
     WINDOW* gameBoard = newwin(30, 40, 2, 2);
     start_color();
     init_pair(1, COLOR_GREEN, COLOR_BLACK);
@@ -84,6 +93,7 @@ int main() {
     attroff(COLOR_PAIR(1));
     refresh();
     keypad(gameBoard, TRUE);
+
     WINDOW* scoreBoard = newwin(14, 36, 3, 43);
     init_pair(3, COLOR_BLACK, COLOR_WHITE);
     wmove(scoreBoard, 0, 0);
@@ -95,7 +105,9 @@ int main() {
     mvwprintw(scoreBoard, 5, 3, "poison: %d", MainSnake.snake_length);
     mvwprintw(scoreBoard, 6, 3, "gate: %d", MainSnake.snake_length);
     wrefresh(scoreBoard);
+
     WINDOW* missionBoard = newwin(14, 36, 18, 43);
+    MainSnake.setSnake();
     wbkgd(missionBoard, COLOR_PAIR(6));
     init_pair(3, COLOR_BLACK, COLOR_WHITE);
     wmove(missionBoard, 0, 0);
@@ -106,36 +118,62 @@ int main() {
     mvwprintw(missionBoard, 4, 3, "grow: %d", MainSnake.snake_length);
     mvwprintw(missionBoard, 5, 3, "poison: %d", MainSnake.snake_length);
     mvwprintw(missionBoard, 6, 3, "gate: %d", MainSnake.snake_length);
-    wrefresh(missionBoard); // Snake head 초기에 가장 중앙에 배치함
+    wrefresh(missionBoard);
+
     while (1) {
+        MainSnake.SpawnItem();
         int key;
         noecho();
         key = wgetch(gameBoard);
-        flushinp();
-        usleep(150000);
-        MainSnake.map[MainSnake.head_y][MainSnake.head_x] = 0;
+
+        MainSnake.showSnake();
+
         switch (key) {
-        case(KEY_DOWN): // KEY_DOWN
-            MainSnake.head_y += 1;
-    
+        case(KEY_DOWN):
+            if (MainSnake.ahead != 'n') {
+                MainSnake.head_y += 1;
+                MainSnake.ahead = 's';
+                MainSnake.body.insert(MainSnake.body.begin(), pair<int, int>(MainSnake.head_y, MainSnake.head_x));
+                map[MainSnake.body.back().first][MainSnake.body.back().second] = 0;
+                MainSnake.body.pop_back();
+                MainSnake.showSnake();
+            }
             break;
-        case(KEY_UP): // KEY_UP
-            MainSnake.head_y -= 1;
-           
+        case(KEY_UP):
+            if (MainSnake.ahead != 's') {
+                MainSnake.head_y -= 1;
+                MainSnake.ahead = 'n';
+                MainSnake.body.insert(MainSnake.body.begin(), pair<int, int>(MainSnake.head_y, MainSnake.head_x));
+                map[MainSnake.body.back().first][MainSnake.body.back().second] = 0;
+                MainSnake.body.pop_back();
+                MainSnake.showSnake();
+            }
             break;
-        case(KEY_LEFT): // KEY_LEFT
-            MainSnake.head_x -= 1;
-            
+        case(KEY_LEFT):
+            if (MainSnake.ahead != 'e') {
+                MainSnake.head_x -= 1;
+                MainSnake.ahead = 'w';
+                MainSnake.body.insert(MainSnake.body.begin(), pair<int, int>(MainSnake.head_y, MainSnake.head_x));
+                map[MainSnake.body.back().first][MainSnake.body.back().second] = 0;
+                MainSnake.body.pop_back();
+                MainSnake.showSnake();
+            }
             break;
-        case(KEY_RIGHT): // KEY_RIGHT
-            MainSnake.head_x += 1;
-     
+        case(KEY_RIGHT):
+            if (MainSnake.ahead != 'w') {
+                MainSnake.head_x += 1;
+                MainSnake.ahead = 'e';
+                MainSnake.body.insert(MainSnake.body.begin(), pair<int, int>(MainSnake.head_y, MainSnake.head_x));
+                map[MainSnake.body.back().first][MainSnake.body.back().second] = 0;
+                MainSnake.body.pop_back();
+                MainSnake.showSnake();
+            }
             break;
         }
-        MainSnake.showSnake();
+        MainSnake.DelItem();
         for (int i = 0; i < 30; i++) {
             for (int j = 0; j < 40; j++) {
-                switch (MainSnake.map[i][j]) {
+                switch (map[i][j]) {
                 case 0:
                     mvwprintw(gameBoard, i, j, " ");
                     break;
@@ -148,15 +186,18 @@ int main() {
                 case 4:
                     mvwprintw(gameBoard, i, j, "@");
                     break;
+                case 5:
+                    mvwprintw(gameBoard, i, j, "?");
+                    break;
+                case 6:
+                    mvwprintw(gameBoard, i, j, "?");
+                    break;
                 }
             }
         }
 
-        wrefresh(gameBoard);
     }
-
-
+    wrefresh(gameBoard);
     endwin();
     return 0;
-
 }
