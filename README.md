@@ -25,4 +25,4 @@ hariaus@kookmin.ac.kr
 
 ![spring.svg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/45ce497c-3cd3-46d0-9064-306b79ee32e8/spring.svg)
 
-https://camo.githubusercontent.com/80236dc3b91c3f9208943f517049389209dbe82b391584b30618d7df211deab1/68747470733a2f2f6769746875622d726561646d652d73746174732e76657263656c2e6170702f6170693f757365726e616d653d53554e4d492d4b494d2673686f775f69636f6e733d74727565267468656d653d7261646963616c
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=SUNMI-KIM&show_icons=true&theme=radical)
