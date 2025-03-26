@@ -1,7 +1,7 @@
 ![header](https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=%20SUNMI-KIM&fontSize=90)
 
 <aside>
-😃 Kookmin University Software (KMU) 3학년 휴학 중
+😃 Kookmin University Software (KMU) 
 
 </aside>
 
