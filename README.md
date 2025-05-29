@@ -15,6 +15,25 @@ hariaus@kookmin.ac.kr
 
 ### Teck Stack🧑🏼‍💻
 
+##### 🧑‍💻 **백엔드 개발**
+
+- Java
+- Spring Framework
+- Spring Boot
+- MySQL
+
+##### ☁️ **클라우드 & 인프라**
+
+- AWS (EC2, SQS, Lambda, RDS)
+- Linux
+
+##### 🤝 **협업 및 개발 도구**
+
+- Git & GitHub
+- IntelliJ IDEA, VS Code, Vim
+- Slack
+- Notion
+
 ---
 
 ![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=SUNMI-KIM&show_icons=true&theme=radical)
