@@ -24,7 +24,7 @@ hariaus@kookmin.ac.kr
 
 ##### ☁️ **클라우드 & 인프라**
 
-- AWS (EC2, SQS, Lambda, RDS, SNS)
+- AWS (EC2, SQS, Lambda, SNS)
 - Linux
 
 ##### 🤝 **협업 및 개발 도구**
