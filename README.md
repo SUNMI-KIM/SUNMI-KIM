@@ -13,6 +13,8 @@ hariaus@naver.com
 
 hariaus@kookmin.ac.kr
 
+https://velog.io/@hariaus/posts
+
 ### Teck Stack🧑🏼‍💻
 
 ##### 🧑‍💻 **백엔드 개발**
